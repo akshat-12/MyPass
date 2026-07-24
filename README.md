@@ -12,43 +12,18 @@ This project builds a simple LLVM function pass plugin named `MyPass` and runs i
 Make sure the LLVM tools are available in your shell, especially `opt`.
 Also make sure that opt/cmake/ninja are added to the PATH
 
-## Build the project
+## Run the pass on the sample testcase
 
-From the repository root:
+To build and run the sample C++ testcase `tests/test.cpp`:
 
 ```bash
 chmod +x build.sh
-./build.sh
+./build.sh tests/test.cpp
 ```
 
-This script will:
+This will:
 
-1. create a `build/` directory
-2. run CMake with Ninja
-3. build the `MyPass` plugin
-4. run the plugin on `tests/test.ll`
-
-## Manual build steps
-
-If you prefer to run the steps manually:
-
-```bash
-mkdir -p build
-cd build
-cmake -G Ninja ..
-ninja MyPass
-```
-
-## Run the pass
-
-Run the plugin with `opt`:
-
-```bash
-opt \
-  -load-pass-plugin ./MyPass.dylib \
-  -passes='MyPass' \
-  ../tests/test.ll \
-  -S -o output.ll
-```
-
-You should see output like function names and instruction counts printed by the pass.
+1. build the `MyPass` plugin
+2. run Clang to generate LLVM IR from `tests/test.cpp`
+3. run `opt` with the plugin on the generated `.ll` file
+4. print the pass output, including function names and instruction counts
